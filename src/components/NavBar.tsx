@@ -1,5 +1,6 @@
 import Link from "next/link"
 import DesktopNavbar from "./DesktopNavbar"
+import MobileNavbar from "./MobileNavbar"
 
 function NavBar() {
     return (
@@ -13,7 +14,7 @@ function NavBar() {
                     </div>
 
                     <DesktopNavbar />
-                    {/* <MobileNavbar /> */}
+                    <MobileNavbar />
                 </div>
             </div>
         </nav>
