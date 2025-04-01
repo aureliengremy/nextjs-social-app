@@ -9,6 +9,7 @@ import { Card, CardContent } from './ui/card';
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar';
 import { Link } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns'
+import { DeleteAlertDialog } from './DeleteAlertDialog';
 
 // type Posts = ReturnType<typeof getPosts> // but returning a promesse
 type Posts = Awaited<ReturnType<typeof getPosts>> // hover Posts to see what you get
@@ -74,7 +75,7 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
 
 
     return (
-        <Card className='overflow-hidden'>
+        <Card className="overflow-hidden">
             <CardContent className="p-4 sm:p-6">
                 <div className="space-y-4">
                     <div className="flex space-x-3 sm:space-x-4">
@@ -83,6 +84,7 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
                                 <AvatarImage src={post.author.image ?? "/avatar.png"} />
                             </Avatar>
                         </Link>
+
                         {/* POST HEADER & TEXT CONTENT */}
                         <div className="flex-1 min-w-0">
                             <div className="flex items-start justify-between">
@@ -108,125 +110,125 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
                         </div>
                     </div>
 
-                    POST IMAGE
-                    {/* {post.image && ( */}
-                    <div className="rounded-lg overflow-hidden">
-                        <img src={post.image} alt="Post content" className="w-full h-auto object-cover" />
-                    </div>
-                    {/* )} */}
+                    {/* POST IMAGE */}
+                    {post.image && (
+                        <div className="rounded-lg overflow-hidden">
+                            <img src={post.image} alt="Post content" className="w-full h-auto object-cover" />
+                        </div>
+                    )}
 
                     {/* LIKE & COMMENT BUTTONS */}
-                    {/* <div className="flex items-center pt-2 space-x-4"> */}
-                    {user ? (
+                    <div className="flex items-center pt-2 space-x-4">
+                        {/* {user ? (
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                className={`text-muted-foreground gap-2 ${hasLiked ? "text-red-500 hover:text-red-600" : "hover:text-red-500"
+                                    }`}
+                                onClick={handleLike}
+                            >
+                                {hasLiked ? (
+                                    <HeartIcon className="size-5 fill-current" />
+                                ) : (
+                                    <HeartIcon className="size-5" />
+                                )}
+                                <span>{optimisticLikes}</span>
+                            </Button>
+                        ) : (
+                            <SignInButton mode="modal">
+                                <Button variant="ghost" size="sm" className="text-muted-foreground gap-2">
+                                    <HeartIcon className="size-5" />
+                                    <span>{optimisticLikes}</span>
+                                </Button>
+                            </SignInButton>
+                        )}
+
                         <Button
                             variant="ghost"
                             size="sm"
-                            className={`text-muted-foreground gap-2 ${hasLiked ? "text-red-500 hover:text-red-600" : "hover:text-red-500"
-                                }`}
-                            onClick={handleLike}
+                            className="text-muted-foreground gap-2 hover:text-blue-500"
+                            onClick={() => setShowComments((prev) => !prev)}
                         >
-                            {hasLiked ? (
-                                <HeartIcon className="size-5 fill-current" />
-                            ) : (
-                                <HeartIcon className="size-5" />
-                            )}
-                            <span>{optimisticLikes}</span>
-                        </Button>
-                    ) : (
-                        <SignInButton mode="modal">
-                            <Button variant="ghost" size="sm" className="text-muted-foreground gap-2">
-                                <HeartIcon className="size-5" />
-                                <span>{optimisticLikes}</span>
-                            </Button>
-                        </SignInButton>
-                    )}
-
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-muted-foreground gap-2 hover:text-blue-500"
-                        onClick={() => setShowComments((prev) => !prev)}
-                    >
-                        <MessageCircleIcon
-                            className={`size-5 ${showComments ? "fill-blue-500 text-blue-500" : ""}`}
-                        />
-                        <span>{post.comments.length}</span>
-                    </Button>
-                    {/* </div> */}
+                            <MessageCircleIcon
+                                className={`size-5 ${showComments ? "fill-blue-500 text-blue-500" : ""}`}
+                            />
+                            <span>{post.comments.length}</span>
+                        </Button> */}
+                    </div>
 
                     {/* COMMENTS SECTION */}
                     {/* {showComments && ( */}
                     <div className="space-y-4 pt-4 border-t">
-                        <div className="space-y-4">
-                            {/* DISPLAY COMMENTS */}
-                            {post.comments.map((comment) => (
-                                <div key={comment.id} className="flex space-x-3">
-                                    <Avatar className="size-8 flex-shrink-0">
-                                        <AvatarImage src={comment.author.image ?? "/avatar.png"} />
-                                    </Avatar>
-                                    <div className="flex-1 min-w-0">
-                                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                                            <span className="font-medium text-sm">{comment.author.name}</span>
-                                            <span className="text-sm text-muted-foreground">
-                                                @{comment.author.username}
-                                            </span>
-                                            <span className="text-sm text-muted-foreground">·</span>
-                                            <span className="text-sm text-muted-foreground">
-                                                {formatDistanceToNow(new Date(comment.createdAt))} ago
-                                            </span>
+                        {/* <div className="space-y-4">
+                        
+                                {post.comments.map((comment) => (
+                                    <div key={comment.id} className="flex space-x-3">
+                                        <Avatar className="size-8 flex-shrink-0">
+                                            <AvatarImage src={comment.author.image ?? "/avatar.png"} />
+                                        </Avatar>
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                                                <span className="font-medium text-sm">{comment.author.name}</span>
+                                                <span className="text-sm text-muted-foreground">
+                                                    @{comment.author.username}
+                                                </span>
+                                                <span className="text-sm text-muted-foreground">·</span>
+                                                <span className="text-sm text-muted-foreground">
+                                                    {formatDistanceToNow(new Date(comment.createdAt))} ago
+                                                </span>
+                                            </div>
+                                            <p className="text-sm break-words">{comment.content}</p>
                                         </div>
-                                        <p className="text-sm break-words">{comment.content}</p>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
+                                ))}
+                            </div> */}
 
-                        {user ? (
-                            <div className="flex space-x-3">
-                                <Avatar className="size-8 flex-shrink-0">
-                                    <AvatarImage src={user?.imageUrl || "/avatar.png"} />
-                                </Avatar>
-                                <div className="flex-1">
-                                    <Textarea
-                                        placeholder="Write a comment..."
-                                        value={newComment}
-                                        onChange={(e) => setNewComment(e.target.value)}
-                                        className="min-h-[80px] resize-none"
-                                    />
-                                    <div className="flex justify-end mt-2">
-                                        <Button
-                                            size="sm"
-                                            onClick={handleAddComment}
-                                            className="flex items-center gap-2"
-                                            disabled={!newComment.trim() || isCommenting}
-                                        >
-                                            {isCommenting ? (
-                                                "Posting..."
-                                            ) : (
-                                                <>
-                                                    <SendIcon className="size-4" />
-                                                    Comment
-                                                </>
-                                            )}
-                                        </Button>
+                        {/* {user ? (
+                                <div className="flex space-x-3">
+                                    <Avatar className="size-8 flex-shrink-0">
+                                        <AvatarImage src={user?.imageUrl || "/avatar.png"} />
+                                    </Avatar>
+                                    <div className="flex-1">
+                                        <Textarea
+                                            placeholder="Write a comment..."
+                                            value={newComment}
+                                            onChange={(e) => setNewComment(e.target.value)}
+                                            className="min-h-[80px] resize-none"
+                                        />
+                                        <div className="flex justify-end mt-2">
+                                            <Button
+                                                size="sm"
+                                                onClick={handleAddComment}
+                                                className="flex items-center gap-2"
+                                                disabled={!newComment.trim() || isCommenting}
+                                            >
+                                                {isCommenting ? (
+                                                    "Posting..."
+                                                ) : (
+                                                    <>
+                                                        <SendIcon className="size-4" />
+                                                        Comment
+                                                    </>
+                                                )}
+                                            </Button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ) : (
-                            <div className="flex justify-center p-4 border rounded-lg bg-muted/50">
-                                <SignInButton mode="modal">
-                                    <Button variant="outline" className="gap-2">
-                                        <LogInIcon className="size-4" />
-                                        Sign in to comment
-                                    </Button>
-                                </SignInButton>
-                            </div>
-                        )}
+                            ) : (
+                                <div className="flex justify-center p-4 border rounded-lg bg-muted/50">
+                                    <SignInButton mode="modal">
+                                        <Button variant="outline" className="gap-2">
+                                            <LogInIcon className="size-4" />
+                                            Sign in to comment
+                                        </Button>
+                                    </SignInButton>
+                                </div>
+                            )} */}
                     </div>
                     {/* )} */}
                 </div>
             </CardContent>
-        </Card >
+        </Card>
     )
 }
 
