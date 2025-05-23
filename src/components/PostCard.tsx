@@ -126,7 +126,7 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
 
                     {/* LIKE & COMMENT BUTTONS */}
                     <div className="flex items-center pt-2 space-x-4">
-                        {/* {user ? (
+                        {user ? (
                             <Button
                                 variant="ghost"
                                 size="sm"
@@ -160,14 +160,14 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
                                 className={`size-5 ${showComments ? "fill-blue-500 text-blue-500" : ""}`}
                             />
                             <span>{post.comments.length}</span>
-                        </Button> */}
+                        </Button>
                     </div>
 
                     {/* COMMENTS SECTION */}
-                    {/* {showComments && ( */}
-                    <div className="space-y-4 pt-4 border-t">
-                        {/* <div className="space-y-4">
-                        
+                    {showComments && (
+                        <div className="space-y-4 pt-4 border-t">
+                            <div className="space-y-4">
+
                                 {post.comments.map((comment) => (
                                     <div key={comment.id} className="flex space-x-3">
                                         <Avatar className="size-8 flex-shrink-0">
@@ -188,9 +188,9 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
                                         </div>
                                     </div>
                                 ))}
-                            </div> */}
+                            </div>
 
-                        {/* {user ? (
+                            {user ? (
                                 <div className="flex space-x-3">
                                     <Avatar className="size-8 flex-shrink-0">
                                         <AvatarImage src={user?.imageUrl || "/avatar.png"} />
@@ -230,9 +230,9 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
                                         </Button>
                                     </SignInButton>
                                 </div>
-                            )} */}
-                    </div>
-                    {/* )} */}
+                            )}
+                        </div>
+                    )}
                 </div>
             </CardContent>
         </Card>
